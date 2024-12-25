@@ -50,4 +50,8 @@ if __name__ == '__main__':
         [1, 0]
     ]
 
+    a = [1, 2, 2, 1, 3, 1, 2, 2, 2, 1, 3, 3, 1, 3, 2, 3, 1]
+    a = np.array(a)
+    D = np.array(D)
+    D = np.hstack((a.reshape(-1, 1), D))
     print(gini_utils(D, 0, dec=3))

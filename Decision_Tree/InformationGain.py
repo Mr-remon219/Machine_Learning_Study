@@ -38,6 +38,21 @@ def Gain_utils(ent, D, a, rho=1.0, dec=None, ratio=True):
     else:
         return gain
 
+def IV(a, dec=None):
+    p = {}
+    for i in a:
+        if i in p:
+            p[i] += 1.0 / len(a)
+        else:
+            p[i] = 1.0 / len(a)
+    p = np.array(list(p.values()))
+
+    iv = -np.sum(p * np.log2(p))
+    if dec is not None:
+        iv = round(iv, dec)
+
+    return iv
+
 
 if __name__ == '__main__':
     D = [
@@ -60,5 +75,9 @@ if __name__ == '__main__':
         [1, 0]
     ]
 
-    print(Gain_utils(Ent(D, 1), D, 0, dec=3))
+
+    print(IV([1, 2, 2, 1, 3, 1, 2, 2, 2, 1, 3, 3, 1, 3, 2, 3, 1], dec=3))
+    print(IV([1, 1, 1, 1, 1, 2, 2, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1], dec=3))
+
+
 
