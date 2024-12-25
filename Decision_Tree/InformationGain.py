@@ -11,7 +11,7 @@ def Ent(D, l):
     p /= len(D)
     return -np.sum(p * np.log2(p))
 
-def Gain_utils(ent, D, a, rho=1.0, dec=None):
+def Gain_utils(ent, D, a, rho=1.0, dec=None, ratio=True):
     c = {}
     for row in D:
         if row[a] in c:
@@ -33,7 +33,10 @@ def Gain_utils(ent, D, a, rho=1.0, dec=None):
         gain = round(gain, dec)
         gain_ratio = round(gain_ratio, dec)
 
-    return gain, gain_ratio
+    if ratio:
+        return gain_ratio
+    else:
+        return gain
 
 
 if __name__ == '__main__':
