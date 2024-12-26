@@ -8,6 +8,7 @@ sys.path.append('..')
 class C45Lite:
     def __init__(self, D):
         self.D = D
+        self.check = False
         self.mytree = self.create_tree(D)
         print(self.mytree)
 
@@ -41,16 +42,11 @@ class C45Lite:
         n = []
         for row in D:
             if row[a] == v:
-                if a == 0:
-                    n.append(row[1:])
-                else:
-                    n.append(row[:a] + row[a + 1:])
-        return n
+                n.append(np.delete(row, a))
+        return np.array(n)
 
     def create_tree(self, D):
-        # 首先要判断截止条件
         classList = [label[-1] for label in D]
-
         if classList.count(classList[0]) == len(classList):
             return classList[0]
         if len(D[0]) == 1:
@@ -66,4 +62,5 @@ class C45Lite:
         return mytree
 
     def predict(self, D):
-        pass
+        for key in self.mytree.keys():
+            pass
