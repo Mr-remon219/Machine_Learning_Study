@@ -1,4 +1,8 @@
-# 参考博客https://cloud.tencent.com/developer/article/1057143
+"""
+参考博客：
+https://juejin.cn/post/7077352935834779685
+https://cloud.tencent.com/developer/article/1057143
+"""
 
 import sys
 from InformationGain import *
@@ -6,11 +10,13 @@ sys.path.append('..')
 
 
 class C45Lite:
-    def __init__(self, D):
+    def __init__(self, D, tree=None):
         self.D = D
         self.check = False
-        self.mytree = self.create_tree(D)
-        print(self.mytree)
+        if tree is None:
+            self.mytree = self.create_tree(D)
+        else:
+            self.mytree = tree
 
     def majorityCnt(self, classList):
         p = {}
@@ -43,6 +49,7 @@ class C45Lite:
         for row in D:
             if row[a] == v:
                 n.append(np.delete(row, a))
+
         return np.array(n)
 
     def create_tree(self, D):
@@ -61,6 +68,16 @@ class C45Lite:
 
         return mytree
 
-    def predict(self, D):
-        for key in self.mytree.keys():
-            pass
+    def get_tree(self):
+        return self.mytree
+
+    def predict(self, a):
+        pre = self.mytree
+        while isinstance(pre, dict):
+            key = list(pre.keys())[0]
+            pre = pre[key]
+            if a[0][key] in pre:
+                pre = pre[a[0][key]]
+            else:
+                break
+        return pre
