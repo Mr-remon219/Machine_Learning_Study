@@ -68,16 +68,39 @@ class C45Lite:
 
         return mytree
 
+    def find_majority(self, pre):
+        p = {}
+        for son in list(pre.values()):
+            if isinstance(son, dict):
+                x, y = self.find_majority(son)
+                p[x] = y
+            else:
+                if son in p:
+                    p[son] += 1
+                else:
+                    p[son] = 1
+        k, v = None, None
+        for key, value in p.items():
+            if k is None or value > v:
+                k, v = key, value
+
+        return k, v
+
+
     def get_tree(self):
         return self.mytree
 
-    def predict(self, a):
-        pre = self.mytree
-        while isinstance(pre, dict):
-            key = list(pre.keys())[0]
-            pre = pre[key]
-            if a[0][key] in pre:
-                pre = pre[a[0][key]]
-            else:
-                break
-        return pre
+    def predict(self, D):
+        y = [0 for i in range(len(D))]
+        for i in range(len(y)):
+            a = D[i]
+            pre = self.mytree
+            while isinstance(pre, dict):
+                key = list(pre.keys())[0]
+                pre = pre[key]
+                if a[key] in pre:
+                    pre = pre[a[key]]
+                else:
+                    pre = self.find_majority(pre)
+            y[i] = pre
+        return y
