@@ -27,6 +27,13 @@ def cross_entropy_error_batch(y_hat, y):
     delta = 1e-7
     return -np.sum(y * np.log(y_hat + delta)) / batch_size
 
+def squared_loss(y_hat, y):
+    if y_hat.ndim == 1:
+        y_hat = y_hat.reshape(1, y_hat.size)
+        y = y.reshape(1, y.size)
+
+    return np.sum((y_hat - y) ** 2)
+
 
 def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
     N, C, H, W = input_data.shape

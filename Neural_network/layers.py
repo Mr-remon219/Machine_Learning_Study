@@ -100,12 +100,30 @@ class SoftmaxWithLoss:
 
         return self.Loss
 
-    def backward(self, dout=1):
+    def backward(self):
         batch_size = self.y_hat.shape[0]
         dx = (self.y_hat - self.y) / batch_size
 
         return dx
 
+
+class SquaredLoss:
+    def __init__(self):
+        self.y_hat = None
+        self.y = None
+        self.Loss = None
+
+    def forward(self, y_hat, y):
+        self.y = y
+        self.y_hat = y_hat
+        self.Loss = squared_loss(y_hat, y)
+
+        return self.Loss
+
+    def backward(self):
+        dx = 2 * np.sum(self.y_hat - self.y)
+
+        return dx
 
 class Dropout:
     def __init__(self, dropout_ratio=0.5):
