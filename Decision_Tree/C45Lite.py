@@ -1,7 +1,6 @@
 """
 参考博客：
-https://juejin.cn/post/7077352935834779685
-https://cloud.tencent.com/developer/article/1057143
+https://cuijiahua.com/blog/2017/11/ml_3_decision_tree_2.html
 """
 
 import sys
@@ -52,19 +51,22 @@ class C45Lite:
 
         return np.array(n)
 
-    def create_tree(self, D):
+    def create_tree(self, D, labels, featLabels):
         classList = [label[-1] for label in D]
         if classList.count(classList[0]) == len(classList):
             return classList[0]
-        if len(D[0]) == 1:
+        if len(D[0]) == 1 or len(labels) == 0:
             return self.majorityCnt(classList)
 
         bestFeat = self.chooseBestFeature(D)
-        mytree = {bestFeat: {}}
+        bestFeatLabel = labels[bestFeat]
+        featLabels = np.append(featLabels, bestFeatLabel)
+        mytree = {bestFeatLabel: {}}
+        labels = np.delete(labels, bestFeat)
         featValues = [feat[bestFeat] for feat in D]
         featValues = set(featValues)
         for value in featValues:
-            mytree[bestFeat][value] = self.create_tree(self.splitDataSet(D, bestFeat, value))
+            mytree[bestFeatLabel][value] = self.create_tree(self.splitDataSet(D, bestFeat, value), labels, featLabels)
 
         return mytree
 
